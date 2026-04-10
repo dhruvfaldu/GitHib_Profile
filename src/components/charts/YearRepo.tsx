@@ -11,11 +11,14 @@ function YearRepo({ repos }: Props) {
         total[year] = total[year] ? total[year] + 1 : 1;
         return total;
     }, {});
+    // console.log(years);
+    
 
-    // const sortedYears = Object.keys(years).map(year => ({ year, count: years[parseInt(year)] }));
-    const sortedYears = Object.keys(years)
-        .map(year => ({ year: parseInt(year), count: years[parseInt(year)] }))
+    const sortedYears: { year: number; count: number }[] = Object.keys(years)
+        .map(year => ({ year: Number(year), count: years[Number(year)] }))
         .sort((a, b) => a.year - b.year);
+        // console.log(sortedYears);
+        
 
     return (
         <>

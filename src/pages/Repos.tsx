@@ -226,7 +226,7 @@ function Repos() {
                         {filtered.map((repo, index) => <RepoCard key={index} repo={repo} />)}
                     </div>
 
-                    <Pagination page={page} setPage={setPage} hasNextPage={data?.length == 10} />
+                    <Pagination page={page} setPage={setPage} hasNextPage={data?.length == 10} maxpages={page} />
                 </>
             )}
         </>
