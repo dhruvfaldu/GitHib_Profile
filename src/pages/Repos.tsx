@@ -1,7 +1,7 @@
 import * as Select from "@radix-ui/react-select";
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { IoSearchOutline } from "react-icons/io5";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import RepoCard from "../components/common/RepoCard";
 import useUserStore from "../store/useStore";
 import Pagination from "../components/common/Pagination";
@@ -15,6 +15,7 @@ function Repos() {
 
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
+    const [maxpages, setMaxPages] = useState(1);
     const [language, setLanguage] = useState("all");
     const [stars, setStars] = useState("Most Stars");
     const [all, setAll] = useState("All");
@@ -28,9 +29,15 @@ function Repos() {
 
     const { data, isLoading, isError } = userRepos(user, page);
     console.log(data);
-    
+
 
     const repos = data as Repo[] || [];
+
+    useEffect(() => {
+        if (repos.length >= 0 && repos.length < 10) {
+            setMaxPages(page);
+        }
+    }, [data])
 
     let filtered = [...repos];
 
