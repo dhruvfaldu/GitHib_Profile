@@ -1,8 +1,13 @@
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { Repo } from "../../types/github";
+import { Language } from "../../types/github";
 
-function LanguageChart({ repos }) {
-    const getLanguageData = (repos) => {
-        const langCount = {};
+type Props = {
+    repos: Repo[];
+}
+function LanguageChart({ repos }: Props) {
+    const getLanguageData = (repos: Repo[]) => {
+        const langCount: { [key: string]: number } = {};
         repos.forEach((repo) => {
             const lang = repo.language;
             if (!lang) return;
@@ -13,7 +18,7 @@ function LanguageChart({ repos }) {
             }
         });
 
-        return Object.keys(langCount).map((lang) => ({
+        return Object.keys(langCount).map((lang: string): Language => ({
             language: lang,
             count: langCount[lang],
         }));

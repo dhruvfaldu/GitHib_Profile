@@ -1,6 +1,11 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from "recharts";
+import { Repo } from "../../types/github";
 
-function TopRepos({ repos }) {
+type Props = {
+    repos: Repo[];
+}
+
+function TopRepos({ repos }: Props) {
     const topRepos = repos.sort((a, b) => b.stargazers_count - a.stargazers_count).slice(0, 10);
 
     return (

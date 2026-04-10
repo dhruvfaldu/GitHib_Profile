@@ -1,16 +1,25 @@
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-function YearRepo({ repos }) {
-    const years = repos.reduce((total, repo) => {
+import { Repo } from "../../types/github";
+
+type Props = {
+    repos: Repo[];
+}
+
+function YearRepo({ repos }: Props) {
+    const years = repos.reduce((total: Record<number, number>, repo) => {
         const year = new Date(repo.created_at).getFullYear();
         total[year] = total[year] ? total[year] + 1 : 1;
         return total;
     }, {});
 
-    const sortedYears = Object.entries(years).map(([year, count]) => ({ year, count }))
-    
+    // const sortedYears = Object.keys(years).map(year => ({ year, count: years[parseInt(year)] }));
+    const sortedYears = Object.keys(years)
+        .map(year => ({ year: parseInt(year), count: years[parseInt(year)] }))
+        .sort((a, b) => a.year - b.year);
+
     return (
         <>
-            <h2 className="text-left mb-3 text-text">Repos create per Year</h2>
+            <h2 className="text-left mb-3 text-text">Repos created per Year</h2>
             <ResponsiveContainer width="100%" height={300}>
                 <AreaChart
                     width={500}
