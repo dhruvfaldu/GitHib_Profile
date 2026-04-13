@@ -29,4 +29,10 @@ export interface Repo {
     fork: boolean;
     description: string;
     html_url: string;
+    created_at: string;
+}
+
+export interface Language {
+    language: string;
+    count: number;
 }

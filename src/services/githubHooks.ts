@@ -42,5 +42,6 @@ export const userStats = ((username: string) => {
     });
 })
 
-export default { useUser, userRepos, userFollowers, userStats }
 
+
+export default { useUser, userRepos, userFollowers, userStats }

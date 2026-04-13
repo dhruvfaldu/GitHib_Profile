@@ -1,7 +1,7 @@
 import Card from "../components/common/Card"
 import { FaCode, FaRegStar } from "react-icons/fa6";
 import { LuTrendingUp } from "react-icons/lu";
-import LanguageChart from "../components/Charts/LanguageChart";
+import LanguageChart from "../components/charts/LanguageChart";
 import { useParams } from "react-router-dom";
 import { IoGitNetwork } from "react-icons/io5";
 import TopRepos from "../components/charts/TopRepos";
@@ -9,14 +9,16 @@ import YearRepo from "../components/charts/YearRepo";
 import { userStats } from "../services/githubHooks";
 function Stats() {
 
-    const { username } = useParams();
+    const { username } = useParams<{ username: string }>();
 
-    const { data } = userStats(username);
+    const { data } = userStats(username?? "");
 
-    const repos = data?.data || [];
+    const repos = data || [];
     console.log(repos);
 
     const averageStarsRepo = repos.reduce((total, repo) => total + repo.stargazers_count,0) / repos.length
+    console.log({averageStarsRepo});
+
 
     return (
         <>
@@ -48,6 +50,7 @@ function Stats() {
                     <LuTrendingUp className="w-5 h-5 mb-1 mx-auto text-text" />
                     <div className="text-2xl font-bold text-secondarytext font-mono">
                         {averageStarsRepo}
+                        
                     </div>
                     <div className="text-xs text-text mt-1">
                         Average Stars/Repos

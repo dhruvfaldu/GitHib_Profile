@@ -11,7 +11,7 @@ import { SlUserFollowing } from "react-icons/sl";
 import Skeleton from "../components/loaders/Skeleton";
 import useUserStore from "../store/useStore";
 import Card from "../components/common/Card";
-import {useUser} from "../services/githubHooks";
+import { useUser } from "../services/githubHooks";
 import error from "../components/errors/error";
 import { User } from "../types/github";
 
@@ -22,7 +22,7 @@ function Profile() {
 
   const { data, isLoading, isError } = useUser(username || "")
   console.log(data);
-  
+
 
   const userdata = data;
 
@@ -34,7 +34,7 @@ function Profile() {
 
   // if (isError || userdata instanceof Error) return <error />
 
-  const navStyle = ({ isActive}: { isActive: boolean }) =>
+  const navStyle = ({ isActive }: { isActive: boolean }) =>
     `flex flex-col sm:flex-row items-center gap-2 px-4 py-3 text-sm hover:text-white hover:border-b-2 hover:border-gray-600 ${isActive
       ? "border-b-2 border-[#57a5ff] text-secondarytext"
       : "text-text"
@@ -92,30 +92,36 @@ function Profile() {
               {/* second section */}
               <div className="flex-1 min-w-0">
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-                  <Card className="text-center hover:scale-[1.02]" onClick={() => {}}>
-                    <IoBookOutline className="w-5 h-5 mb-1 mx-auto text-text" />
-                    <div className="text-xl sm:text-2xl font-bold text-secondarytext font-mono">
-                      {userdata?.public_repos}
-                    </div>
-                    <div className="text-xs text-text mt-1">Repositories</div>
+                  <Card className="text-center hover:scale-[1.02]" onClick={() => { }}>
+                    <NavLink to={`/user/${username}/repos`} className="flex flex-col items-center gap-1">
+                      <IoBookOutline className="w-5 h-5 mb-1 mx-auto text-text" />
+                      <div className="text-xl sm:text-2xl font-bold text-secondarytext font-mono">
+                        {userdata?.public_repos}
+                      </div>
+                      <div className="text-xs text-text mt-1">Repositories</div>
+                    </NavLink>
                   </Card>
-                  <Card className="text-center hover:scale-[1.02] " onClick={() => {}}>
-                    <AiOutlineTeam className="w-5 h-5 mb-1 mx-auto text-text" />
-                    <div className="text-xl sm:text-2xl font-bold text-secondarytext font-mono">
-                      {userdata?.followers}
-                    </div>
-                    <div className="text-xs text-text mt-1">Followers</div>
+                  <Card className="text-center hover:scale-[1.02] " onClick={() => { }}>
+                    <NavLink to={`/user/${username}/followers`} className="flex flex-col items-center gap-1">
+                      <AiOutlineTeam className="w-5 h-5 mb-1 mx-auto text-text" />
+                      <div className="text-xl sm:text-2xl font-bold text-secondarytext font-mono">
+                        {userdata?.followers}
+                      </div>
+                      <div className="text-xs text-text mt-1">Followers</div>
+                    </NavLink>
                   </Card>
-                  <Card className="text-center hover:scale-[1.02]" onClick={() => {}}>
-                    <SlUserFollowing className="w-5 h-5 mb-1 mx-auto text-text" />
-                    <div className="text-xl sm:text-2xl font-bold text-secondarytext font-mono">
-                      {userdata?.following}
-                    </div>
-                    <div className="text-xs text-text mt-1">
-                      Following
-                    </div>
+                  <Card className="text-center hover:scale-[1.02]" onClick={() => { }}>
+                    <NavLink to={`/user/${username}/followers`} className="flex flex-col items-center gap-1">
+                      <SlUserFollowing className="w-5 h-5 mb-1 mx-auto text-text" />
+                      <div className="text-xl sm:text-2xl font-bold text-secondarytext font-mono">
+                        {userdata?.following}
+                      </div>
+                      <div className="text-xs text-text mt-1">
+                        Following
+                      </div>
+                    </NavLink>
                   </Card>
-                  <Card className="text-center hover:scale-[1.02]" onClick={() => {}}>
+                  <Card className="text-center hover:scale-[1.02]" onClick={() => { }}>
                     <FaRegFileAlt className="w-5 h-5 mb-1 mx-auto text-text" />
                     <div className="text-xl sm:text-2xl font-bold text-secondarytext font-mono">
                       {userdata?.public_gists}
