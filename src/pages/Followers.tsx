@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import useUserStore from "../store/useStore";
 import Followersloader from "../components/loaders/Followersloader";
 import Pagination from "../components/common/Pagination";
@@ -9,14 +9,10 @@ import { User } from "../types/github";
 function Followers() {
 
     const [activeTab, setActiveTab] = useState("followers");
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState<number>(1);
+    const [maxpages, setMaxPages] = useState<number>(1);
 
-    const user = useUserStore((state: unknown) => {
-        if (typeof state === "object" && state !== null && "user" in state) {
-            return (state as { user: User }).user;
-        }
-        return null;
-    });
+    const user = useUserStore((state) => state.user);
 
     const username = user?.login || "";
 
@@ -24,6 +20,15 @@ function Followers() {
 
     const users = data || []
     console.log(users);
+
+    useEffect(() => {
+        if (user) {
+            const perPage = 10;
+            const totalPages = Math.ceil(user.public_repos / perPage);
+
+            setMaxPages(totalPages);
+        }
+    }, [user]);
 
 
     if (isError) {
@@ -75,7 +80,7 @@ function Followers() {
                         ))}
                     </div>
 
-                    <Pagination page={page} setPage={setPage} hasNextPage={users.length > 0} />
+                    <Pagination page={page} setPage={setPage} hasNextPage={users.length > 0} maxpages={maxpages} />
                 </div>
             )}
         </>

@@ -18,7 +18,7 @@ import { User } from "../types/github";
 function Profile() {
   const { username } = useParams<{ username: string }>()
 
-  const setUser = useUserStore((state: any) => state.setUser) as (user: User) => void
+  const setUser = useUserStore((state) => state.setUser);
 
   const { data, isLoading, isError } = useUser(username || "")
   console.log(data);
@@ -92,7 +92,7 @@ function Profile() {
               {/* second section */}
               <div className="flex-1 min-w-0">
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-                  <Card className="text-center hover:scale-[1.02]" onClick={() => { }}>
+                  <Card className="text-center hover:scale-[1.02]">
                     <NavLink to={`/user/${username}/repos`} className="flex flex-col items-center gap-1">
                       <IoBookOutline className="w-5 h-5 mb-1 mx-auto text-text" />
                       <div className="text-xl sm:text-2xl font-bold text-secondarytext font-mono">
@@ -101,7 +101,7 @@ function Profile() {
                       <div className="text-xs text-text mt-1">Repositories</div>
                     </NavLink>
                   </Card>
-                  <Card className="text-center hover:scale-[1.02] " onClick={() => { }}>
+                  <Card className="text-center hover:scale-[1.02] ">
                     <NavLink to={`/user/${username}/followers`} className="flex flex-col items-center gap-1">
                       <AiOutlineTeam className="w-5 h-5 mb-1 mx-auto text-text" />
                       <div className="text-xl sm:text-2xl font-bold text-secondarytext font-mono">
@@ -110,7 +110,7 @@ function Profile() {
                       <div className="text-xs text-text mt-1">Followers</div>
                     </NavLink>
                   </Card>
-                  <Card className="text-center hover:scale-[1.02]" onClick={() => { }}>
+                  <Card className="text-center hover:scale-[1.02]" >
                     <NavLink to={`/user/${username}/followers`} className="flex flex-col items-center gap-1">
                       <SlUserFollowing className="w-5 h-5 mb-1 mx-auto text-text" />
                       <div className="text-xl sm:text-2xl font-bold text-secondarytext font-mono">
@@ -121,7 +121,7 @@ function Profile() {
                       </div>
                     </NavLink>
                   </Card>
-                  <Card className="text-center hover:scale-[1.02]" onClick={() => { }}>
+                  <Card className="text-center hover:scale-[1.02]" >
                     <FaRegFileAlt className="w-5 h-5 mb-1 mx-auto text-text" />
                     <div className="text-xl sm:text-2xl font-bold text-secondarytext font-mono">
                       {userdata?.public_gists}

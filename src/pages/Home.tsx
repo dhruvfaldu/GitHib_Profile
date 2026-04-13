@@ -71,12 +71,7 @@ function Home() {
             <h3 className="text-xs font-medium tracking-wider uppercase text-text mb-3">Recent Searches</h3>
             <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
               {recent.map((user: string, index: number) => (
-                <button
-                  key={index}
-                  onClick={() => navigate(`/user/${user}`)}
-                  className="text-sm text-[#e2e7ee] cursor-pointer hover:bg-[#161b22] transition-colors"
-                >
-                  <Card className="flex items-center gap-2 h-6 text-left px-3 py-4 border rounded-full" onClick={()=>{}}>
+                  <Card className="flex items-center gap-2 h-6 text-left px-3 py-4 border rounded-full text-sm text-[#e2e7ee] cursor-pointer hover:bg-[#161b22] transition-colors" onClick={() => navigate(`/user/${user}`)}>
                     <img
                       src={`https://github.com/${user}.png`}
                       className="w-5 h-5 rounded-full"
@@ -87,7 +82,6 @@ function Home() {
                       removeUser(user)
                     }} className="w-3.5 h-3.5 cursor-pointer text-text opacity-0 hover:opacity-100 transition-opacity hover:text-red-300" />
                   </Card>
-                </button>
               ))}
             </div>
           </div>

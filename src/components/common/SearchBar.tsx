@@ -1,7 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-function SearchBar({ onSearch }) {
+interface SearchBarProps {
+    onSearch: (username: string) => void;
+}
+
+function SearchBar({ onSearch }: SearchBarProps) {
     const [search, setSearch] = useState("");
     const navigate = useNavigate();
 

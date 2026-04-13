@@ -1,7 +1,7 @@
 import * as Select from "@radix-ui/react-select";
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { IoSearchOutline } from "react-icons/io5";
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import RepoCard from "../components/common/RepoCard";
 import useUserStore from "../store/useStore";
 import Pagination from "../components/common/Pagination";
@@ -14,74 +14,59 @@ import { Repo } from "../types/github";
 function Repos() {
 
     const [search, setSearch] = useState("");
-    const [page, setPage] = useState(1);
-    const [maxpages, setMaxPages] = useState(1);
+    const [page, setPage] = useState<number>(1);
+    const [maxpages, setMaxPages] = useState<number>(1);
     const [language, setLanguage] = useState("all");
     const [stars, setStars] = useState("Most Stars");
     const [all, setAll] = useState("All");
 
-    const user = useUserStore((state: unknown) => {
-        if (typeof state === "object" && state !== null && "user" in state) {
-            return (state as { user: User }).user;
-        }
-        return null;
-    });
+    const user = useUserStore((state) => state.user);
 
     const { data, isLoading, isError } = userRepos(user, page);
     console.log(data);
 
 
     const repos = data as Repo[] || [];
+    console.log(repos);
+
 
     useEffect(() => {
-        if (repos.length >= 0 && repos.length < 10) {
-            setMaxPages(page);
+        if (user) {
+            const perPage = 10;
+            const totalPages = Math.ceil(user.public_repos / perPage);
+
+            setMaxPages(totalPages);
         }
-    }, [data])
+    }, [user]);
 
-    let filtered = [...repos];
+    const filtered = useMemo(() => {
+        let filteredRepos = [...repos];
 
-    if (search) {
-        filtered = filtered.filter((repo) =>
-            repo.name.toLowerCase().includes(search.toLowerCase())
-        );
-    }
+        filteredRepos = filteredRepos.filter((repo) =>{
+            const matchesSearch = search ? repo.name.toLowerCase().includes(search.toLowerCase()) : true;
 
-    if (language !== "all") {
-        filtered = filtered.filter(
-            (repo) => repo.language?.toLowerCase() === language
-        );
-    }
+            const matchesLanguage =  language === "all" || repo.language?.toLowerCase() === language;
 
-    if (all === "Sources") {
-        filtered = filtered.filter((repo) => !repo.fork);
-    }
+            const matchesAll = all === "All" || (all === "Sources" && !repo.fork) || (all === "Forks" && repo.fork) || (all === "Archived" && repo.archived);
 
-    if (all === "Forks") {
-        filtered = filtered.filter((repo) => repo.fork);
-    }
+            return matchesSearch && matchesLanguage && matchesAll;
+        });
 
-    if (all === "Archived") {
-        filtered = filtered.filter((repo) => repo.archived);
-    }
+        if (stars === "Most Stars") {
+            filteredRepos.sort((leastStars, mostStars) => mostStars.stargazers_count - leastStars.stargazers_count);
+        } else if (stars === "Most Forks") {
+            filteredRepos.sort((leastForks, mostForks) => mostForks.forks_count - leastForks.forks_count);
+        }else if (stars === "Recently Updated") {
+            filteredRepos.sort(
+                (notUpdate, Update) => new Date(Update.updated_at).getTime() - new Date(notUpdate.updated_at).getTime()
+            );
+        } else if (stars === "Name A-Z") {
+            filteredRepos.sort((nameA, nameZ) => nameA.name.localeCompare(nameZ.name));
+        } 
+        return filteredRepos;
 
-    if (stars === "Most Stars") {
-        filtered.sort((a, b) => b.stargazers_count - a.stargazers_count);
-    }
+    }, [repos, search, language, stars, all]);
 
-    if (stars === "Most Forks") {
-        filtered.sort((a, b) => b.forks_count - a.forks_count);
-    }
-
-    if (stars === "Recently Updated") {
-        filtered.sort(
-            (a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-        );
-    }
-
-    if (stars === "Name A-Z") {
-        filtered.sort((a, b) => a.name.localeCompare(b.name));
-    }
 
     if (isError) {
         return <NotFound />
@@ -233,7 +218,7 @@ function Repos() {
                         {filtered.map((repo, index) => <RepoCard key={index} repo={repo} />)}
                     </div>
 
-                    <Pagination page={page} setPage={setPage} hasNextPage={data?.length == 10} maxpages={page} />
+                    <Pagination page={page} setPage={setPage} hasNextPage={data?.length == 10} maxpages={maxpages} />
                 </>
             )}
         </>

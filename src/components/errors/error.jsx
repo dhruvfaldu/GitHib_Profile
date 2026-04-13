@@ -1,5 +1,3 @@
-//API call ma kai error ave to show karvanu popup box
-
 import Card from "../common/Card"
 
 function error() {
