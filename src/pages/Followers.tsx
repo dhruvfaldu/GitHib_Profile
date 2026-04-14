@@ -18,9 +18,29 @@ function Followers() {
 
     const { data, isLoading, isError } = userFollowers(username, activeTab, page)
 
+    /**
+     * @description: Extract followers or following data based on active tab
+     * @param {User[]} data - Array of user data containing followers and following information
+     * @returns {User[]} - Array of users based on active tab (followers or following)
+     */
     const users = data || []
     console.log(users);
+    
 
+    /**
+     * @description: Calculate total pages based on followers count and items per page
+     * @param {number} followers - Total number of followers
+     * @returns {number}
+     */
+    const followers = users.map((user: User) => user)
+
+
+    /**
+     * @description: Update max pages whenever user data changes
+     * @param {User} user - User data containing followers count
+     * @returns {void}
+     * @sideEffects: Updates maxpages state based on followers count
+     */
     useEffect(() => {
         if (user) {
             const perPage = 10;

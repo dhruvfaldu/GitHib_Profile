@@ -13,7 +13,6 @@ import useUserStore from "../store/useStore";
 import Card from "../components/common/Card";
 import { useUser } from "../services/githubHooks";
 import error from "../components/errors/error";
-import { User } from "../types/github";
 
 function Profile() {
   const { username } = useParams<{ username: string }>()
@@ -23,17 +22,33 @@ function Profile() {
   const { data, isLoading, isError } = useUser(username || "")
   console.log(data);
 
-
+  /**
+   * @description: Update user data in the store when fetched data changes
+   */
   const userdata = data;
 
+  /**
+   * @description: Effect to set user data in the store when fetched data changes
+   * @param {User} userdata - The user data fetched from the API
+   */
   useEffect(() => {
     if (userdata) {
       setUser(userdata)
     }
   }, [userdata, setUser])
 
-  // if (isError || userdata instanceof Error) return <error />
+  if (isError || userdata instanceof Error) {
+    return <error/>
+  }
 
+  if (!userdata) {
+    return <Skeleton />
+  }
+
+
+  /**
+   * @description: Function to determine the style of navigation links based on active state
+   */
   const navStyle = ({ isActive }: { isActive: boolean }) =>
     `flex flex-col sm:flex-row items-center gap-2 px-4 py-3 text-sm hover:text-white hover:border-b-2 hover:border-gray-600 ${isActive
       ? "border-b-2 border-[#57a5ff] text-secondarytext"
