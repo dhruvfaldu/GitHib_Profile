@@ -44,12 +44,22 @@ function Home() {
     },
   ]
 
+  /**
+   * @description: Handle search action by updating recent searches and navigating to the user's profile
+   * @param {string} username - The GitHub username to search for
+   * @returns {void}
+   **/
   const handleSearch = (username: string): void => {
     const filtered = recent.filter((item: string): boolean => item !== username);
     const updated = [username, ...filtered].slice(0, 8);
     setRecent(updated);
   };
 
+  /**
+   * @description: Remove a user from the recent searches
+   * @param {string} username - The GitHub username to remove
+   * @returns {void}
+   */
   const removeUser = (username: string): void => {
     const updated = recent.filter((item: string): boolean => item !== username);
     setRecent(updated);
@@ -71,23 +81,17 @@ function Home() {
             <h3 className="text-xs font-medium tracking-wider uppercase text-text mb-3">Recent Searches</h3>
             <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
               {recent.map((user: string, index: number) => (
-                <button
-                  key={index}
-                  onClick={() => navigate(`/user/${user}`)}
-                  className="text-sm text-[#e2e7ee] cursor-pointer hover:bg-[#161b22] transition-colors"
-                >
-                  <Card className="flex items-center gap-2 h-6 text-left px-3 py-4 border rounded-full" onClick={()=>{}}>
-                    <img
-                      src={`https://github.com/${user}.png`}
-                      className="w-5 h-5 rounded-full"
-                    />
-                    <span>{user}</span>
-                    <IoClose onClick={(e) => {
-                      e.stopPropagation();
-                      removeUser(user)
-                    }} className="w-3.5 h-3.5 cursor-pointer text-text opacity-0 hover:opacity-100 transition-opacity hover:text-red-300" />
-                  </Card>
-                </button>
+                <Card key={index} className="flex items-center gap-2 h-6 text-left px-3 py-4 border rounded-full text-sm text-[#e2e7ee] cursor-pointer hover:bg-[#161b22] transition-colors" onClick={() => navigate(`/user/${user}`)}>
+                  <img
+                    src={`https://github.com/${user}.png`}
+                    className="w-5 h-5 rounded-full"
+                  />
+                  <span>{user}</span>
+                  <IoClose onClick={(e) => {
+                    e.stopPropagation();
+                    removeUser(user)
+                  }} className="w-3.5 h-3.5 cursor-pointer text-text opacity-0 hover:opacity-100 transition-opacity hover:text-red-300" />
+                </Card>
               ))}
             </div>
           </div>
@@ -96,7 +100,7 @@ function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {profile_box.map((profile, index) => (
                 <Link to={`/user/${profile.name}`} key={index} >
-                  <Card className="flex items-center gap-3 cursor-pointer h-20 text-left hover:bg-[#161b22]" onClick={()=>{}}>
+                  <Card className="flex items-center gap-3 cursor-pointer h-20 text-left hover:bg-[#161b22]" onClick={() => { handleSearch(profile.name) }}>
                     <img src={profile.img_url} alt="profile image" className="w-10 h-10 rounded-full border border-border" />
                     <div>
                       <p className="text-sm font-medium text-[#e2e7ee]">{profile.name}</p>

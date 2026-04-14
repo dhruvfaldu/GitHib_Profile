@@ -7,17 +7,38 @@ type Props = {
 
 function Pagination({ page, setPage, hasNextPage, maxpages }: Props) {
 
+    /**
+     * @description: Generate an array of page numbers to display in the pagination component, including ellipses for skipped pages
+     * @param {number} page - The current active page number
+     * @param {number} maxpages - The total number of pages available
+     * @returns {number[]} - An array of page numbers
+     */
     const getpage = () => {
-        let pages: number[] = [];
-        for (let i = page - 2; i <= page + 2; i++) {
-            if (i >= 1 && i <= maxpages) {
-                pages.push(i);
-            }
+        let pages: (number|string)[] = [];
+        pages.push(1);
+
+        const start = Math.max(2, page - 1);
+        const end = Math.min(maxpages - 1, page + 1);
+
+        if (start > 2) {
+            pages.push("..."as string);
+        }
+        for (let i = start; i <= end; i++) {
+            pages.push(i);
+        }
+        if (end < maxpages - 1) {
+            pages.push("..." as string);
+        }
+        if (maxpages > 1) {
+            pages.push(maxpages);
         }
         return pages;
-    }
+    };
 
-    const pages: number[] = getpage();
+    /**
+     * @description: Render pagination buttons with appropriate styles and functionality based on the current page and total pages
+     */
+    const pages: (number|string)[] = getpage();
 
     return (
         <div className="flex items-center justify-center gap-2 mt-5">
@@ -28,17 +49,16 @@ function Pagination({ page, setPage, hasNextPage, maxpages }: Props) {
             >
                 Previous
             </button>
-            {/* <p className="text-text">Page {page}</p> */}
-            {pages.map((p) => (
+            {pages.map((p,id) => (
                 <button
-                    key={p}
-                    onClick={() => setPage(p)}
-                    disabled={p > maxpages} // 👈 safety
+                    key={id}
+                    onClick={() => typeof p === "number" && setPage(p)}
+                    disabled={typeof p === "string" } 
                     className={`px-3 py-2 rounded-lg border 
                     ${p === page
                             ? "bg-blue-500 text-white border-blue-500"
                             : "bg-secondary text-text border-border hover:border-blue-400"}
-                    ${p > maxpages ? "opacity-50 cursor-not-allowed" : ""}`}
+                    ${typeof p === "string"  ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                     {p}
                 </button>

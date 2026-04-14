@@ -1,12 +1,15 @@
 import { useState } from "react"
 
-export function useLocalStorage(key, initialValue) {
+export function useLocalStorage(key: string, initialValue:unknown) {
   const [value, setValue] = useState(() => {
     const saved = localStorage.getItem(key)
-    return saved ? JSON.parse(saved) : initialValue
+    if(typeof saved === "string") {
+      return JSON.parse(saved)
+    }
+    return initialValue
   })
 
-  const update = (val) => {
+  const update = (val: unknown) => {
     setValue(val)
     localStorage.setItem(key, JSON.stringify(val))
   }

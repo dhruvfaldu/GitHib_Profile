@@ -12,28 +12,43 @@ import Skeleton from "../components/loaders/Skeleton";
 import useUserStore from "../store/useStore";
 import Card from "../components/common/Card";
 import { useUser } from "../services/githubHooks";
-import error from "../components/errors/error";
-import { User } from "../types/github";
+import Error from "../components/errors/Error";
 
 function Profile() {
   const { username } = useParams<{ username: string }>()
 
-  const setUser = useUserStore((state: any) => state.setUser) as (user: User) => void
+  const setUser = useUserStore((state) => state.setUser);
 
   const { data, isLoading, isError } = useUser(username || "")
   console.log(data);
 
-
+  /**
+   * @description: Update user data in the store when fetched data changes
+   */
   const userdata = data;
 
+  /**
+   * @description: Effect to set user data in the store when fetched data changes
+   * @param {User} userdata - The user data fetched from the API
+   */
   useEffect(() => {
     if (userdata) {
       setUser(userdata)
     }
   }, [userdata, setUser])
 
-  // if (isError || userdata instanceof Error) return <error />
+  if (isError || userdata instanceof Error) {
+    return <Error/>
+  }
 
+  if (!userdata) {
+    return <Skeleton />
+  }
+
+
+  /**
+   * @description: Function to determine the style of navigation links based on active state
+   */
   const navStyle = ({ isActive }: { isActive: boolean }) =>
     `flex flex-col sm:flex-row items-center gap-2 px-4 py-3 text-sm hover:text-white hover:border-b-2 hover:border-gray-600 ${isActive
       ? "border-b-2 border-[#57a5ff] text-secondarytext"
@@ -92,7 +107,7 @@ function Profile() {
               {/* second section */}
               <div className="flex-1 min-w-0">
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-                  <Card className="text-center hover:scale-[1.02]" onClick={() => { }}>
+                  <Card className="text-center hover:scale-[1.02]">
                     <NavLink to={`/user/${username}/repos`} className="flex flex-col items-center gap-1">
                       <IoBookOutline className="w-5 h-5 mb-1 mx-auto text-text" />
                       <div className="text-xl sm:text-2xl font-bold text-secondarytext font-mono">
@@ -101,7 +116,7 @@ function Profile() {
                       <div className="text-xs text-text mt-1">Repositories</div>
                     </NavLink>
                   </Card>
-                  <Card className="text-center hover:scale-[1.02] " onClick={() => { }}>
+                  <Card className="text-center hover:scale-[1.02] ">
                     <NavLink to={`/user/${username}/followers`} className="flex flex-col items-center gap-1">
                       <AiOutlineTeam className="w-5 h-5 mb-1 mx-auto text-text" />
                       <div className="text-xl sm:text-2xl font-bold text-secondarytext font-mono">
@@ -110,7 +125,7 @@ function Profile() {
                       <div className="text-xs text-text mt-1">Followers</div>
                     </NavLink>
                   </Card>
-                  <Card className="text-center hover:scale-[1.02]" onClick={() => { }}>
+                  <Card className="text-center hover:scale-[1.02]" >
                     <NavLink to={`/user/${username}/followers`} className="flex flex-col items-center gap-1">
                       <SlUserFollowing className="w-5 h-5 mb-1 mx-auto text-text" />
                       <div className="text-xl sm:text-2xl font-bold text-secondarytext font-mono">
@@ -121,7 +136,7 @@ function Profile() {
                       </div>
                     </NavLink>
                   </Card>
-                  <Card className="text-center hover:scale-[1.02]" onClick={() => { }}>
+                  <Card className="text-center hover:scale-[1.02]" >
                     <FaRegFileAlt className="w-5 h-5 mb-1 mx-auto text-text" />
                     <div className="text-xl sm:text-2xl font-bold text-secondarytext font-mono">
                       {userdata?.public_gists}

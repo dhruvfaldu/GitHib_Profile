@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import useUserStore from "../store/useStore";
 import Followersloader from "../components/loaders/Followersloader";
 import Pagination from "../components/common/Pagination";
@@ -9,21 +9,46 @@ import { User } from "../types/github";
 function Followers() {
 
     const [activeTab, setActiveTab] = useState("followers");
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState<number>(1);
+    const [maxpages, setMaxPages] = useState<number>(1);
 
-    const user = useUserStore((state: unknown) => {
-        if (typeof state === "object" && state !== null && "user" in state) {
-            return (state as { user: User }).user;
-        }
-        return null;
-    });
+    const user = useUserStore((state) => state.user);
 
     const username = user?.login || "";
 
     const { data, isLoading, isError } = userFollowers(username, activeTab, page)
 
+    /**
+     * @description: Extract followers or following data based on active tab
+     * @param {User[]} data - Array of user data containing followers and following information
+     * @returns {User[]} - Array of users based on active tab (followers or following)
+     */
     const users = data || []
     console.log(users);
+    
+
+    /**
+     * @description: Calculate total pages based on followers count and items per page
+     * @param {number} followers - Total number of followers
+     * @returns {number}
+     */
+    const followers = users.map((user: User) => user)
+
+
+    /**
+     * @description: Update max pages whenever user data changes
+     * @param {User} user - User data containing followers count
+     * @returns {void}
+     * @sideEffects: Updates maxpages state based on followers count
+     */
+    useEffect(() => {
+        if (user) {
+            const perPage = 10;
+            const totalPages = Math.ceil(user.public_repos / perPage);
+
+            setMaxPages(totalPages);
+        }
+    }, [user]);
 
 
     if (isError) {
@@ -75,7 +100,7 @@ function Followers() {
                         ))}
                     </div>
 
-                    <Pagination page={page} setPage={setPage} hasNextPage={users.length > 0} />
+                    <Pagination page={page} setPage={setPage} hasNextPage={users.length > 0} maxpages={maxpages} />
                 </div>
             )}
         </>
