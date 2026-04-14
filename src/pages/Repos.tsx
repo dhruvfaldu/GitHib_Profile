@@ -8,8 +8,8 @@ import Pagination from "../components/common/Pagination";
 import Reposloader from "../components/loaders/Reposloader";
 import { userRepos } from "../services/githubHooks";
 import NotFound from "./NotFound";
-import { User } from "../types/github";
 import { Repo } from "../types/github";
+import Card from "../components/common/Card";
 
 function Repos() {
 
@@ -82,6 +82,8 @@ function Repos() {
         return <NotFound />
     }
 
+    const isContentEmpty = repos.length === 0 && !isLoading;
+
     return (
         <>
             {isLoading ? (
@@ -90,9 +92,9 @@ function Repos() {
                 <>
                     <div className="flex flex-col sm:flex-row gap-3 overflow-x-auto">
                         {/* search */}
-                        <div className="flex-1  relative">
+                        <div className="flex-1 relative">
                             <IoSearchOutline className="absolute top-1/2 left-3 h-4 w-4 text-text -translate-y-1/2" />
-                            <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search repositories..." className="h-9 w-full font-medium rounded-md border border-border bg-bg pl-9 pr-3 text-sm text-text" />
+                            <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search repositories..." className="h-9 w-full font-medium rounded-md border border-border bg-bg pl-10 pr-3 text-sm text-text focus:outline-none  focus:border-secondarytext" />
                         </div>
                         {/* language */}
                         <Select.Root value={language} onValueChange={setLanguage}>
@@ -228,7 +230,13 @@ function Repos() {
                         {filtered.map((repo, index) => <RepoCard key={index} repo={repo} />)}
                     </div>
 
-                    <Pagination page={page} setPage={setPage} hasNextPage={data?.length == 10} maxpages={maxpages} />
+                    {isContentEmpty ? (
+                        <Card className="text-center text-text p-6 mt-4">
+                        <div className="flex justify-center items-center text-center text-text m-15 ">No repositories found.</div>
+                        </Card>
+                    ) : (
+                        <Pagination page={page} setPage={setPage} hasNextPage={data?.length == 10} maxpages={maxpages} />
+                    )}
                 </>
             )}
         </>

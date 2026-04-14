@@ -5,12 +5,17 @@ type Props = {
     maxpages: number;
 }
 
+/**
+ * @description: A component for rendering pagination controls
+ * @param {number} page - The current page number
+ * @param {function} setPage - A function to update the current page number
+ * @param {boolean} hasNextPage - A boolean indicating if there is a next page available
+ * @param {number} maxpages - The total number of pages available
+ */
 function Pagination({ page, setPage, hasNextPage, maxpages }: Props) {
 
     /**
      * @description: Generate an array of page numbers to display in the pagination component, including ellipses for skipped pages
-     * @param {number} page - The current active page number
-     * @param {number} maxpages - The total number of pages available
      * @returns {number[]} - An array of page numbers
      */
     const getpage = () => {
@@ -45,7 +50,7 @@ function Pagination({ page, setPage, hasNextPage, maxpages }: Props) {
             <button
                 onClick={() => setPage(page - 1)}
                 disabled={page === 1}
-                className={`border border-border text-text px-3 py-2 bg-secondary rounded-xl cursor-pointer hover:border-blue-400 ${page === 1 ? "opacity-50 cursor-not-allowed" : ""}`}
+                className={`border border-border text-text px-3 py-2 bg-secondary rounded-xl hover:border-blue-400 ${page === 1 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
             >
                 Previous
             </button>
@@ -66,7 +71,7 @@ function Pagination({ page, setPage, hasNextPage, maxpages }: Props) {
             <button
                 onClick={() => setPage(page + 1)}
                 disabled={!hasNextPage}
-                className={`border border-border text-text px-3 py-2 bg-secondary rounded-xl cursor-pointer hover:border-blue-400 ${!hasNextPage ? "opacity-50 cursor-not-allowed" : ""}`}
+                className={`border border-border text-text px-3 py-2 bg-secondary rounded-xl hover:border-blue-400 ${!hasNextPage ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
             >
                 Next
             </button>

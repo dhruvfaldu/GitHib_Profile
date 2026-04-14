@@ -24,8 +24,6 @@ function Followers() {
      * @returns {User[]} - Array of users based on active tab (followers or following)
      */
     const users = data || []
-    console.log(users);
-    
 
     /**
      * @description: Calculate total pages based on followers count and items per page
@@ -54,6 +52,9 @@ function Followers() {
     if (isError) {
         return <NotFound />
     }
+
+    const isContentEmpty = users.length === 0 && !isLoading;
+
 
     return (
         <>
@@ -100,7 +101,13 @@ function Followers() {
                         ))}
                     </div>
 
-                    <Pagination page={page} setPage={setPage} hasNextPage={users.length > 0} maxpages={maxpages} />
+                    {isContentEmpty ? (
+                        <Card className="text-center text-text p-6 mt-4">
+                            <div className="flex justify-center items-center text-center text-text m-15 ">No repositories found.</div>
+                        </Card>
+                    ) : (
+                        <Pagination page={page} setPage={setPage} hasNextPage={data?.length == 10} maxpages={maxpages} />
+                    )}
                 </div>
             )}
         </>

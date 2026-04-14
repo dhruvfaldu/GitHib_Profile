@@ -20,11 +20,11 @@ function TopRepos({ repos }: Props) {
                         top: 5,
                         right: 30,
                         left: 30,
-                        bottom: 5,
+                        bottom: 10,
                     }}
                 >
-                    <XAxis dataKey="name" angle={(-20)} tick={{fontSize: 12}} textAnchor="end" style={{}}/>
-                    <YAxis tick={{fontSize: 12}} domain={[0,5000]}/>
+                    <XAxis dataKey="name" angle={(-10)} tick={{fontSize: 12}} textAnchor="end" tickFormatter={(value) => value.slice(0, 9) + "..."} style={{}}/>
+                    <YAxis tick={{fontSize: 12}} domain={[0, 13000]}/>
                     <Tooltip />
                     <Legend />
                     <Bar dataKey="stargazers_count" fill="#8884d6" barSize={40}  activeBar={{fill: "#344224"}} radius={[8,8,0,0]} animationDuration={800}/>
