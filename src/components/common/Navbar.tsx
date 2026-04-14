@@ -2,9 +2,12 @@ import { RiGithubLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { useDebounce } from "../../hooks/useDebounce";
 import { useState } from "react";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 function Navbar() {
     const [search, setSearch] = useState<string>("")
+    const [recent, setRecent] = useLocalStorage("recentSearches", []);
+
     const debounced = useDebounce(search)
     const navigate = useNavigate()
 
@@ -13,6 +16,16 @@ function Navbar() {
             navigate(`/user/${debounced}`)
         }
     }
+
+    /**
+     * @description: Handle search action by updating recent searches and navigating to the user's profile
+     * @param {string} username - The username to search for
+     */
+    const handleSearch = (username: string): void => {
+        const filtered = recent.filter((item: string): boolean => item !== username);
+        const updated = [username, ...filtered].slice(0, 8);
+        setRecent(updated);
+    };
 
     return (
         <>
@@ -26,7 +39,9 @@ function Navbar() {
                         <form className="flex-1 max-w-35 sm:max-w-sm md:max-w-md">
                             <div className="relative text-text">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-search absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 "><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-                                <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} className="h-8 w-full rounded-md border border-border bg-[#252a31] pl-9 pr-3 text-xs sm:text-sm placeholder:text-text" placeholder="Search username.." />
+                                <input type="text" value={search} onChange={(e) => {
+                                    handleSearch(e.target.value); setSearch(e.target.value)
+                                }} className="h-8 w-full rounded-md border border-border bg-[#252a31] pl-9 pr-3 text-xs sm:text-sm placeholder:text-text" placeholder="Search username.." />
                                 <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2" onClick={handleSubmit}></button>
                             </div>
                         </form>

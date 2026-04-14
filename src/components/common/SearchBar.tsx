@@ -6,13 +6,16 @@ interface SearchBarProps {
 }
 
 function SearchBar({ onSearch }: SearchBarProps) {
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState<string>("");
     const navigate = useNavigate();
 
+    /**
+     * @description: Handle search action by validating input, updating recent searches, and navigating to the user's profile
+     * @param {string} username - The username to search for     */
     const handleSubmit = () => {
         if (!search.trim()) return;
 
-        const username = search.trim();
+        const username: string = search.trim();
 
         onSearch(username);      
         navigate(`/user/${username}`);

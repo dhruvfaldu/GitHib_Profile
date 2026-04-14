@@ -11,13 +11,23 @@ function Stats() {
 
     const { username } = useParams<{ username: string }>();
 
-    const { data } = userStats(username?? "");
+    const { data } = userStats(username ?? "");
 
+    /**
+     * @description: Calculate total stars, forks, and average stars per repository for a user's GitHub repositories
+     * @param {Object[]} data - Array of repository data containing stargazers_count and forks_count
+     * @returns {Object} - An object containing totalStars, totalForks, and averageStarsRepo
+     */
     const repos = data || [];
     console.log(repos);
 
-    const averageStarsRepo = repos.reduce((total, repo) => total + repo.stargazers_count,0) / repos.length
-    console.log({averageStarsRepo});
+    /**
+     * @description: Calculate average stars per repository by summing stargazers_count and dividing by the number of repositories
+     * @param {Object[]} repos - Array of repository data containing stargazers_count
+     * @returns {number} - Average stars per repository
+     */
+    const averageStarsRepo = repos.reduce((total, repo) => total + repo.stargazers_count, 0) / repos.length
+    console.log({ averageStarsRepo });
 
 
     return (
@@ -26,19 +36,19 @@ function Stats() {
                 <Card className="text-center hover:scale-[1.02] ">
                     <FaRegStar className="w-5 h-5 mb-1 mx-auto text-text" />
                     <div className="text-2xl font-bold text-secondarytext font-mono">
-                        {repos.reduce((total, repo) => total + repo.stargazers_count,0)}
+                        {repos.reduce((total, repo) => total + repo.stargazers_count, 0)}
                     </div>
                     <div className="text-xs text-text mt-1">Total Stars</div>
                 </Card>
                 <Card className="text-center hover:scale-[1.02]">
                     <IoGitNetwork className="w-5 h-5 mb-1 mx-auto text-text" />
                     <div className="text-2xl font-bold text-secondarytext font-mono">
-                        {repos.reduce((total, repo) => total + repo.forks_count,0)}
+                        {repos.reduce((total, repo) => total + repo.forks_count, 0)}
                     </div>
                     <div className="text-xs text-text mt-1">Total Forks</div>
                 </Card>
                 <Card className="text-center hover:scale-[1.02]">
-                    <FaCode  className="w-5 h-5 mb-1 mx-auto text-text" />
+                    <FaCode className="w-5 h-5 mb-1 mx-auto text-text" />
                     <div className="text-2xl font-bold text-secondarytext font-mono">
                         C
                     </div>
@@ -50,7 +60,7 @@ function Stats() {
                     <LuTrendingUp className="w-5 h-5 mb-1 mx-auto text-text" />
                     <div className="text-2xl font-bold text-secondarytext font-mono">
                         {averageStarsRepo}
-                        
+
                     </div>
                     <div className="text-xs text-text mt-1">
                         Average Stars/Repos

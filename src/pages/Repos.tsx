@@ -25,11 +25,16 @@ function Repos() {
     const { data, isLoading, isError } = userRepos(user, page);
     console.log(data);
 
-
+    /**
+     * @description: Extract repositories data and log it for debugging purposes
+     */
     const repos = data as Repo[] || [];
     console.log(repos);
 
-
+    /**
+     * @description: Update max pages whenever user data changes
+     * @param {User} user - User data containing public repositories count
+     */
     useEffect(() => {
         if (user) {
             const perPage = 10;
@@ -39,13 +44,18 @@ function Repos() {
         }
     }, [user]);
 
+    /**
+     * @description: Memoized function to filter and sort repositories based on search, language, stars, and all criteria
+     * @returns {Repo[]} - Array of filtered and sorted repositories
+     * @sideEffects: None (pure function)
+     */
     const filtered = useMemo(() => {
         let filteredRepos = [...repos];
 
-        filteredRepos = filteredRepos.filter((repo) =>{
+        filteredRepos = filteredRepos.filter((repo) => {
             const matchesSearch = search ? repo.name.toLowerCase().includes(search.toLowerCase()) : true;
 
-            const matchesLanguage =  language === "all" || repo.language?.toLowerCase() === language;
+            const matchesLanguage = language === "all" || repo.language?.toLowerCase() === language;
 
             const matchesAll = all === "All" || (all === "Sources" && !repo.fork) || (all === "Forks" && repo.fork) || (all === "Archived" && repo.archived);
 
@@ -56,13 +66,13 @@ function Repos() {
             filteredRepos.sort((leastStars, mostStars) => mostStars.stargazers_count - leastStars.stargazers_count);
         } else if (stars === "Most Forks") {
             filteredRepos.sort((leastForks, mostForks) => mostForks.forks_count - leastForks.forks_count);
-        }else if (stars === "Recently Updated") {
+        } else if (stars === "Recently Updated") {
             filteredRepos.sort(
                 (notUpdate, Update) => new Date(Update.updated_at).getTime() - new Date(notUpdate.updated_at).getTime()
             );
         } else if (stars === "Name A-Z") {
             filteredRepos.sort((nameA, nameZ) => nameA.name.localeCompare(nameZ.name));
-        } 
+        }
         return filteredRepos;
 
     }, [repos, search, language, stars, all]);
