@@ -7,6 +7,12 @@ type Props = {
 
 function Pagination({ page, setPage, hasNextPage, maxpages }: Props) {
 
+    /**
+     * @description: Generate an array of page numbers to display in the pagination component, including ellipses for skipped pages
+     * @param {number} page - The current active page number
+     * @param {number} maxpages - The total number of pages available
+     * @returns {number[]} - An array of page numbers
+     */
     const getpage = () => {
         let pages: (number|string)[] = [];
         pages.push(1);
@@ -29,6 +35,9 @@ function Pagination({ page, setPage, hasNextPage, maxpages }: Props) {
         return pages;
     };
 
+    /**
+     * @description: Render pagination buttons with appropriate styles and functionality based on the current page and total pages
+     */
     const pages: (number|string)[] = getpage();
 
     return (
