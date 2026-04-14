@@ -41,12 +41,17 @@ function Followers() {
      */
     useEffect(() => {
         if (user) {
-            const perPage = 10;
-            const totalPages = Math.ceil(user.public_repos / perPage);
+            if (!user) return;
 
-            setMaxPages(totalPages);
+            const perPage = 9;
+            const total =
+                activeTab === "followers"
+                    ? user.followers
+                    : user.following;
+
+            setMaxPages(Math.ceil(total / perPage));
         }
-    }, [user]);
+    }, [user, activeTab]);
 
 
     if (isError) {
@@ -106,7 +111,7 @@ function Followers() {
                             <div className="flex justify-center items-center text-center text-text m-15 ">No repositories found.</div>
                         </Card>
                     ) : (
-                        <Pagination page={page} setPage={setPage} hasNextPage={data?.length == 10} maxpages={maxpages} />
+                        <Pagination page={page} setPage={setPage} hasNextPage={data?.length == 9} maxpages={maxpages} />
                     )}
                 </div>
             )}
