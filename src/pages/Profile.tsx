@@ -12,7 +12,7 @@ import Skeleton from "../components/loaders/Skeleton";
 import useUserStore from "../store/useStore";
 import Card from "../components/common/Card";
 import { useUser } from "../services/githubHooks";
-import error from "../components/errors/error";
+import Error from "../components/errors/error";
 
 function Profile() {
   const { username } = useParams<{ username: string }>()
@@ -38,7 +38,7 @@ function Profile() {
   }, [userdata, setUser])
 
   if (isError || userdata instanceof Error) {
-    return <error/>
+    return <Error/>
   }
 
   if (!userdata) {
