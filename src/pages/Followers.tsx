@@ -24,8 +24,6 @@ function Followers() {
      * @returns {User[]} - Array of users based on active tab (followers or following)
      */
     const users = data || []
-    console.log(users);
-    
 
     /**
      * @description: Calculate total pages based on followers count and items per page
@@ -43,17 +41,25 @@ function Followers() {
      */
     useEffect(() => {
         if (user) {
-            const perPage = 10;
-            const totalPages = Math.ceil(user.public_repos / perPage);
+            if (!user) return;
 
-            setMaxPages(totalPages);
+            const perPage = 9;
+            const total =
+                activeTab === "followers"
+                    ? user.followers
+                    : user.following;
+
+            setMaxPages(Math.ceil(total / perPage));
         }
-    }, [user]);
+    }, [user, activeTab]);
 
 
     if (isError) {
         return <NotFound />
     }
+
+    const isContentEmpty = users.length === 0 && !isLoading;
+
 
     return (
         <>
@@ -100,7 +106,13 @@ function Followers() {
                         ))}
                     </div>
 
-                    <Pagination page={page} setPage={setPage} hasNextPage={users.length > 0} maxpages={maxpages} />
+                    {isContentEmpty ? (
+                        <Card className="text-center text-text p-6 mt-4">
+                            <div className="flex justify-center items-center text-center text-text m-15 ">No repositories found.</div>
+                        </Card>
+                    ) : (
+                        <Pagination page={page} setPage={setPage} hasNextPage={data?.length == 9} maxpages={maxpages} />
+                    )}
                 </div>
             )}
         </>
