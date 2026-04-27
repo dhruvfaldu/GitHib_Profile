@@ -40,17 +40,15 @@ function Followers() {
      * @sideEffects: Updates maxpages state based on followers count
      */
     useEffect(() => {
-        if (user) {
-            if (!user) return;
+        if (!user) return;
 
-            const perPage = 9;
-            const total =
-                activeTab === "followers"
-                    ? user.followers
-                    : user.following;
+        const perPage = 9;
+        const total =
+            activeTab === "followers"
+                ? user.followers
+                : user.following;
 
-            setMaxPages(Math.ceil(total / perPage));
-        }
+        setMaxPages(Math.ceil(total / perPage));
     }, [user, activeTab]);
 
 

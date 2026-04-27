@@ -8,5 +8,10 @@ export default defineConfig({
   server: {
     host: true, // important 🔥
     allowedHosts: ['.ngrok-free.dev'] // 👈 aa add karo
+  },
+  test: {
+    environment: "jsdom",
+    setupFiles: "./src/setupTests.js",
+    globals: true
   }
 })
