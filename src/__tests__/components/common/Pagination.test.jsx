@@ -97,5 +97,6 @@ describe("Pagination Component", () => {
     expect(activeButton).toHaveClass("bg-blue-500")
   })
 
+  
 })
 

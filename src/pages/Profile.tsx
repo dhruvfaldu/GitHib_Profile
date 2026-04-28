@@ -58,7 +58,7 @@ function Profile() {
   return (
     <>
       {isLoading ? (
-        <Skeleton />
+        <Skeleton data-testid="skeleton"/>
       ) : (
         <div className="bg-primary">
           <div className="max-w-7xl min-h-screen mx-auto px-4 py-6 sm:py-8 ">

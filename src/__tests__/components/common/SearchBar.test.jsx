@@ -2,7 +2,7 @@ import { render, screen, fireEvent } from "@testing-library/react"
 import SearchBar from "../../../components/common/SearchBar"
 import { vi } from "vitest"
 
-// 🔥 mock navigate
+//  mock navigate
 const mockNavigate = vi.fn()
 
 vi.mock("react-router-dom", async () => {

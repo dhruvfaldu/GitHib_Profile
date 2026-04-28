@@ -87,7 +87,7 @@ function Home() {
                     className="w-5 h-5 rounded-full"
                   />
                   <span>{user}</span>
-                  <IoClose onClick={(e) => {
+                  <IoClose  data-testid={`remove-btn`} onClick={(e) => {
                     e.stopPropagation();
                     removeUser(user)
                   }} className="w-3.5 h-3.5 cursor-pointer text-text opacity-0 hover:opacity-100 transition-opacity hover:text-red-300" />
