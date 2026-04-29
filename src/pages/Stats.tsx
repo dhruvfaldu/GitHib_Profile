@@ -19,7 +19,7 @@ function Stats() {
      * @returns {Object} - An object containing totalStars, totalForks, and averageStarsRepo
      */
     const repos = data || [];
-    console.log(repos);
+    // console.log(repos);
 
     /**
      * @description: Calculate average stars per repository by summing stargazers_count and dividing by the number of repositories
@@ -27,7 +27,7 @@ function Stats() {
      * @returns {number} - Average stars per repository
      */
     const averageStarsRepo = repos.reduce((total, repo) => total + repo.stargazers_count, 0) / repos.length
-    console.log({ averageStarsRepo });
+    // console.log({ averageStarsRepo });
 
 
     return (

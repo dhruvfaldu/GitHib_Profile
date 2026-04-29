@@ -23,13 +23,13 @@ function Repos() {
     const user = useUserStore((state) => state.user);
 
     const { data, isLoading, isError } = userRepos(user, page);
-    console.log(data);
+    // console.log(data);
 
     /**
      * @description: Extract repositories data and log it for debugging purposes
      */
     const repos = data as Repo[] || [];
-    console.log(repos);
+    // console.log(repos);
 
     /**
      * @description: Update max pages whenever user data changes
