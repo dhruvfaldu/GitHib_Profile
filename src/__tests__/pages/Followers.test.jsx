@@ -29,21 +29,21 @@ describe("Followers", () => {
     mockFollowers.mockClear()
   })
 
-   test("shows loader when loading", () => {
-        mockFollowers.mockReturnValue({
-            data: [],
-            isLoading: true,
-            isError: false,
-        })
-
-        render(
-            <MemoryRouter>
-                <Followers />
-            </MemoryRouter>
-        )
-
-        expect(document.body).toBeTruthy()
+  test("shows loader when loading", () => {
+    mockFollowers.mockReturnValue({
+      data: [],
+      isLoading: true,
+      isError: false,
     })
+
+    render(
+      <MemoryRouter>
+        <Followers />
+      </MemoryRouter>
+    )
+
+    expect(document.body).toBeTruthy()
+  })
 
   test("renders followers", async () => {
     mockFollowers.mockReturnValue({
@@ -63,20 +63,20 @@ describe("Followers", () => {
   })
 
   test("shows empty state when no followers", async () => {
-        mockFollowers.mockReturnValue({
-            data: [],
-            isLoading: false,
-            isError: false,
-        })
-
-        render(
-            <MemoryRouter>
-                <Followers />
-            </MemoryRouter>
-        )
-
-        expect(
-            await screen.findByText("No repositories found.")
-        ).toBeInTheDocument()
+    mockFollowers.mockReturnValue({
+      data: [],
+      isLoading: false,
+      isError: false,
     })
+
+    render(
+      <MemoryRouter>
+        <Followers />
+      </MemoryRouter>
+    )
+
+    expect(
+      await screen.findByText("No repositories found.")
+    ).toBeInTheDocument()
+  })
 })

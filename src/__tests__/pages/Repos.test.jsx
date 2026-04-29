@@ -24,15 +24,12 @@ vi.mock("../../services/githubHooks", () => ({
 const mockRepos = [
     {
         name: "react-app",
-       
     },
     {
         name: "node-api",
-       
     },
     {
         name: "python-tool",
-       
     },
 ]
 

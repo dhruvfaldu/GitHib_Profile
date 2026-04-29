@@ -3,7 +3,6 @@ import { MemoryRouter } from "react-router-dom"
 import { vi } from "vitest"
 import Home from "../../pages/Home"
 
-// mock navigate
 const mockNavigate = vi.fn()
 
 vi.mock("react-router-dom", async () => {
@@ -14,7 +13,6 @@ vi.mock("react-router-dom", async () => {
     }
 })
 
-// mock localStorage hook
 const mockSetRecent = vi.fn()
 
 let recentData = ["dhruv", "john"]

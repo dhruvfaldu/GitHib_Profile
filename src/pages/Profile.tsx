@@ -20,7 +20,7 @@ function Profile() {
   const setUser = useUserStore((state) => state.setUser);
 
   const { data, isLoading, isError } = useUser(username || "")
-  console.log(data);
+  // console.log(data);
 
   /**
    * @description: Update user data in the store when fetched data changes
